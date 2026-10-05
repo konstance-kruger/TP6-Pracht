@@ -1,0 +1,48 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PlotFigure from "../../components/PlotFigure.astro";
+import penguins from "../../assets/penguins.json";
+import * as Plot from "@observablehq/plot";
+
+export const prerender = false;
+
+// Récupération de l'espèce dans l'URL
+const { species } = Astro.params;
+
+// Filtrage des pingouins selon l'espèce reçue
+const filteredPenguins = penguins.filter(
+  (p) => p.species === species
+);
+
+const plotOptions = {
+  marks: [
+    Plot.dot(filteredPenguins, {
+      x: "culmen_length_mm",
+      y: "culmen_depth_mm",
+      stroke: "species",
+    }),
+  ],
+
+  x: {
+    label: "Longueur du bec (mm)",
+  },
+
+  y: {
+    label: "Profondeur du bec (mm)",
+  },
+
+  title: `Espèce : ${species}`,
+};
+---
+
+<Layout>
+  <h1>Pingouins de l'espèce {species}</h1>
+
+  <p>{filteredPenguins.length} pingouin(s) trouvé(s)</p>
+
+  <PlotFigure options={plotOptions} />
+
+  <p>
+    <a href="/rendu-dynamique">← Retour aux espèces</a>
+  </p>
+</Layout>

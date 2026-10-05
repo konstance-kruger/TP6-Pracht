@@ -3,19 +3,85 @@ import PlotFigure from "../components/PlotFigure.astro";
 import Layout from "../layouts/Layout.astro";
 import * as Plot from "@observablehq/plot";
 import penguins from "../assets/penguins.json";
+
+const species = [...new Set(penguins.map((p) => p.species))];
 ---
 
 <Layout>
-  <h1 class="text-2xl">Test Astro et Plot (Observablehq)</h1>
-  <PlotFigure
-    options={{
-      marks: [
-        Plot.dot(penguins, {
-          x: "culmen_length_mm",
-          y: "culmen_depth_mm",
-          stroke: "species",
-        }),
-      ],
-    }}
-  />
+  <h1 class="text-2xl">Pingouins par espèce</h1>
+
+  <div class="tabs">
+    {
+      species.map((currentSpecies, index) => (
+        <button
+          class="tab-button"
+          data-tab={currentSpecies}
+          aria-selected={index === 0 ? "true" : "false"}
+        >
+          {currentSpecies}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    species.map((currentSpecies, index) => {
+      const filteredPenguins = penguins.filter(
+        (p) => p.species === currentSpecies
+      );
+
+      return (
+        <div
+          class="tab-content"
+          data-content={currentSpecies}
+          hidden={index !== 0}
+        >
+          <h2>{currentSpecies}</h2>
+
+          <PlotFigure
+            options={{
+              marks: [
+                Plot.dot(filteredPenguins, {
+                  x: "culmen_length_mm",
+                  y: "culmen_depth_mm",
+                  stroke: "species",
+                }),
+              ],
+              x: {
+                label: "Longueur du bec (mm)",
+              },
+              y: {
+                label: "Profondeur du bec (mm)",
+              },
+              title: `Espèce : ${currentSpecies}`,
+            }}
+          />
+        </div>
+      );
+    })
+  }
+
+<script>
+  const buttons =
+    document.querySelectorAll<HTMLButtonElement>(".tab-button");
+
+  const contents =
+    document.querySelectorAll<HTMLElement>(".tab-content");
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const selectedSpecies = button.dataset.tab;
+
+      buttons.forEach((btn) => {
+        btn.setAttribute("aria-selected", "false");
+      });
+
+      contents.forEach((content) => {
+        content.hidden = content.dataset.content !== selectedSpecies;
+      });
+
+      button.setAttribute("aria-selected", "true");
+    });
+  });
+</script>
 </Layout>

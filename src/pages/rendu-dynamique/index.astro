@@ -1,0 +1,22 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import penguins from "../../assets/penguins.json";
+
+const species = [...new Set(penguins.map((p) => p.species))];
+---
+
+<Layout>
+  <h1>Choisir une espèce de pingouin</h1>
+
+  <ul>
+    {
+      species.map((currentSpecies) => (
+        <li>
+          <a href={`/rendu-dynamique/${currentSpecies}`}>
+            {currentSpecies}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
