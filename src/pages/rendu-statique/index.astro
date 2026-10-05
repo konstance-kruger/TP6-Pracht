@@ -6,7 +6,7 @@ const species = [...new Set(penguins.map((p) => p.species))];
 ---
 
 <Layout>
-  <h1>Rendu dynamique</h1>
+  <h1>Rendu statique</h1>
   <p>Choisis une espèce :</p>
 
   <div class="species-list">
@@ -14,7 +14,7 @@ const species = [...new Set(penguins.map((p) => p.species))];
       species.map((currentSpecies) => (
         <a
           class="species-button"
-          href={`/rendu-dynamique/${currentSpecies}`}
+          href={`/rendu-statique/${currentSpecies}`}
         >
           {currentSpecies}
         </a>

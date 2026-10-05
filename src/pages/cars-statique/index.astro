@@ -1,0 +1,25 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import cars from "../../assets/cars.json";
+
+const years = [...new Set(cars.map((car) => car.year))].sort();
+---
+
+<Layout>
+  <h1>Voitures - rendu statique</h1>
+
+  <p>Choisis une année :</p>
+
+  <div class="species-list">
+    {
+      years.map((year) => (
+        <a
+          class="species-button"
+          href={`/cars-statique/${year}`}
+        >
+          {year}
+        </a>
+      ))
+    }
+  </div>
+</Layout>

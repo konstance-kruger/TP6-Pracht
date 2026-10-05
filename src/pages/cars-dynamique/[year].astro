@@ -1,0 +1,48 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import PlotFigure from "../../components/PlotFigure.astro";
+import cars from "../../assets/cars.json";
+import * as Plot from "@observablehq/plot";
+
+export const prerender = false;
+
+const { year } = Astro.params;
+
+const filteredCars = cars.filter(
+  (car) => car.year.toString() === year
+);
+
+const plotOptions = {
+  grid: true,
+
+  marks: [
+    Plot.dot(filteredCars, {
+      x: "weight (lb)",
+      y: "power (hp)",
+      r: 5,
+    }),
+  ],
+
+  x: {
+    label: "Poids (lb)",
+  },
+
+  y: {
+    label: "Puissance (hp)",
+  },
+
+  title: `Voitures de ${year}`,
+};
+---
+
+<Layout>
+  <h1>Voitures de l'année {year}</h1>
+
+  <p>{filteredCars.length} voiture(s) trouvée(s)</p>
+
+  <PlotFigure options={plotOptions} />
+
+  <a class="back-button" href="/cars-dynamique">
+    ← Retour aux années
+  </a>
+</Layout>

@@ -1,0 +1,26 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import cars from "../../assets/cars.json";
+
+// Liste automatique des années sans doublons
+const years = [...new Set(cars.map((car) => car.year))].sort();
+---
+
+<Layout>
+  <h1>Voitures - rendu dynamique</h1>
+
+  <p>Choisis une année :</p>
+
+  <div class="species-list">
+    {
+      years.map((year) => (
+        <a
+          class="species-button"
+          href={`/cars-dynamique/${year}`}
+        >
+          {year}
+        </a>
+      ))
+    }
+  </div>
+</Layout>

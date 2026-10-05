@@ -4,7 +4,15 @@ import PlotFigure from "../../components/PlotFigure.astro";
 import penguins from "../../assets/penguins.json";
 import * as Plot from "@observablehq/plot";
 
-export const prerender = false;
+export function getStaticPaths() {
+  const species = [...new Set(penguins.map((p) => p.species))];
+
+  return species.map((currentSpecies) => ({
+    params: {
+      species: currentSpecies,
+    },
+  }));
+}
 
 const { species } = Astro.params;
 
@@ -37,7 +45,7 @@ const plotOptions = {
 
   <PlotFigure options={plotOptions} />
 
-  <a class="back-button" href="/rendu-dynamique">
+  <a class="back-button" href="/rendu-statique">
     ← Retour
   </a>
 </Layout>

@@ -8,7 +8,7 @@ const species = [...new Set(penguins.map((p) => p.species))];
 ---
 
 <Layout>
-  <h1 class="text-2xl">Pingouins par espèce</h1>
+  <h1>Pingouins par espèce</h1>
 
   <div class="tabs">
     {
@@ -31,7 +31,7 @@ const species = [...new Set(penguins.map((p) => p.species))];
       );
 
       return (
-        <div
+        <section
           class="tab-content"
           data-content={currentSpecies}
           hidden={index !== 0}
@@ -56,32 +56,32 @@ const species = [...new Set(penguins.map((p) => p.species))];
               title: `Espèce : ${currentSpecies}`,
             }}
           />
-        </div>
+        </section>
       );
     })
   }
 
-<script>
-  const buttons =
-    document.querySelectorAll<HTMLButtonElement>(".tab-button");
+  <script>
+    const buttons =
+      document.querySelectorAll<HTMLButtonElement>(".tab-button");
 
-  const contents =
-    document.querySelectorAll<HTMLElement>(".tab-content");
+    const contents =
+      document.querySelectorAll<HTMLElement>(".tab-content");
 
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const selectedSpecies = button.dataset.tab;
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const selectedSpecies = button.dataset.tab;
 
-      buttons.forEach((btn) => {
-        btn.setAttribute("aria-selected", "false");
+        buttons.forEach((btn) => {
+          btn.setAttribute("aria-selected", "false");
+        });
+
+        contents.forEach((content) => {
+          content.hidden = content.dataset.content !== selectedSpecies;
+        });
+
+        button.setAttribute("aria-selected", "true");
       });
-
-      contents.forEach((content) => {
-        content.hidden = content.dataset.content !== selectedSpecies;
-      });
-
-      button.setAttribute("aria-selected", "true");
     });
-  });
-</script>
+  </script>
 </Layout>
